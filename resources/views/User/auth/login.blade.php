@@ -1,4 +1,6 @@
-@extends('layouts.guest')
+@extends('layouts.guest', ['cssClass' => 'login page', 'user' => 'aung'])
+
+@section('title', 'Login')
 
 @section('content')
     <main>
@@ -12,18 +14,25 @@
                     </div>
                     <h1 class="auth-page-title">Login</h1>
 
-                    <form action="" method="post">
+                    <form action="{{ route('login.store') }}" method="post">
+                        @csrf
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" />
+                            <input type="email" name="email" placeholder="Your Email" />
+                            @error('email')
+                                <small class="text-sm text-red-600">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            <input type="password" placeholder="Your Password" />
+                            <input type="password" name="password" placeholder="Your Password" />
+                            @error('password')
+                                <small class="text-sm text-red-600">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="text-right mb-medium">
                             <a href="/password-reset.html" class="auth-page-password-reset">Reset Password</a>
                         </div>
 
-                        <button class="btn btn-primary btn-login w-full">Login</button>
+                        <button type="submit" class="btn btn-primary btn-login w-full">Login</button>
 
                         <div class="grid grid-cols-2 gap-1 social-auth-buttons">
                             <button class="btn btn-default flex justify-center items-center gap-1">
@@ -37,7 +46,7 @@
                         </div>
                         <div class="login-text-dont-have-account">
                             Don't have an account? -
-                            <a href="/signup.html"> Click here to create one</a>
+                            <a href="{{ route('register') }}"> Click here to create one</a>
                         </div>
                     </form>
                 </div>

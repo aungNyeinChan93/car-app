@@ -7,32 +7,46 @@
                 <div class="auth-page-form">
                     <div class="text-center">
                         <a href="/">
-                            <img src="/img/logoipsum-265.svg" alt="" />
+                            <img src="/img/logoipsum-265.svg" alt="logo" />
                         </a>
                     </div>
                     <h1 class="auth-page-title">Signup</h1>
 
-                    <form action="" method="post">
+                    <form action="{{ route('register.store') }}" method="post">
+                        @csrf
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" />
+                            <input type="email" name="email" placeholder="Your Email" />
                         </div>
+                        @error('email')
+                            <small class="text-sm text-red-600">{{ $message }}</small>
+                        @enderror
                         <div class="form-group">
-                            <input type="password" placeholder="Your Password" />
+                            <input type="password" name="password" placeholder="Your Password" />
                         </div>
+                        @error('password')
+                            <small class="text-sm text-red-600">{{ $message }}</small>
+                        @enderror
                         <div class="form-group">
-                            <input type="password" placeholder="Repeat Password" />
+                            <input type="password_confirmation" name="password_confirmation"
+                                placeholder="Repeat Password" />
                         </div>
+                        @error('password_confirmation')
+                            <small class="text-sm text-red-600">{{ $message }}</small>
+                        @enderror
                         <hr />
                         <div class="form-group">
-                            <input type="text" placeholder="First Name" />
+                            <input type="text" name="name" placeholder="Name" />
                         </div>
+                        @error('name')
+                            <small class="text-sm text-red-600">{{ $message }}</small>
+                        @enderror
                         <div class="form-group">
-                            <input type="text" placeholder="Last Name" />
+                            <input type="text" name="phone" placeholder="Phone" />
                         </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Phone" />
-                        </div>
-                        <button class="btn btn-primary btn-login w-full">Register</button>
+                        @error('phone')
+                            <small class="text-sm text-red-600">{{ $message }}</small>
+                        @enderror
+                        <button type="submit" class="btn btn-primary btn-login w-full">Register</button>
 
                         <div class="grid grid-cols-2 gap-1 social-auth-buttons">
                             <button class="btn btn-default flex justify-center items-center gap-1">
@@ -46,7 +60,7 @@
                         </div>
                         <div class="login-text-dont-have-account">
                             Already have an account? -
-                            <a href="/login.html"> Click here to login </a>
+                            <a href="{{ route('login') }}"> Click here to login </a>
                         </div>
                     </form>
                 </div>

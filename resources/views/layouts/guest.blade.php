@@ -5,7 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf_token" content="{{ csrf_token() }}">
-    <title>@yield('title' . ' - Car Findal Service', 'Car Findal Service')</title>
+    <title>@yield('title', 'default') - Car Rendial Service</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,13 +25,13 @@
     <!-- <link rel="stylesheet" href="css/output.css" /> -->
 </head>
 
-<body>
-
+<body @isset($cssClass)
+    @class(['example-class', $cssClass])
+@endisset>
 
     <main>
         @yield('content')
     </main>
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/4.0.9/scrollreveal.js"
         integrity="sha512-XJgPMFq31Ren4pKVQgeD+0JTDzn0IwS1802sc+QTZckE6rny7AN2HLReq6Yamwpd2hFe5nJJGZLvPStWFv5Kww=="

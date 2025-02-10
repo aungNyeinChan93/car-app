@@ -22,9 +22,13 @@
 
     <link rel="stylesheet" href="css/app.css" />
     <!-- <link rel="stylesheet" href="css/output.css" /> -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 
-<body>
+<body @isset($cssClass)
+    @class(['p-4', $cssClass])
+@endisset>
 
     @include('layouts.partial.header')
     <main>

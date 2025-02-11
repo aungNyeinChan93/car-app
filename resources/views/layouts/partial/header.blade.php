@@ -1,6 +1,6 @@
 <header class="navbar">
     <div class="container navbar-content">
-        <a href="/" class="logo-wrapper">
+        <a href="{{ route('home.index') }}" class="logo-wrapper">
             {{-- <img src="/img/logoipsum-265.svg" alt="Logo" /> --}}
             <div>
                 <span class="text-3xl text-bold text-orange-500 ">{{ config('app.name') }}</span>
@@ -14,7 +14,7 @@
             </svg>
         </button>
         <div class="navbar-auth">
-            <a href="/add_new.html" class="btn btn-add-new-car">
+            <a href="{{ route('cars.create') }}" class="btn btn-add-new-car">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" style="width: 18px; margin-right: 4px">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -36,7 +36,10 @@
                         <a href="my_cars.html">My Cars</a>
                     </li>
                     <li>
-                        <a href="watchlist.html">My Favourite Cars</a>
+                        <a href="{{ route('cars.favouriteCars') }}">My Favourite Cars</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('customers.index') }}">Our Customers</a>
                     </li>
                     @auth
                         <li>

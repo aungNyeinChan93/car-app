@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\User\HomeController;
 
 
 Route::get('test', function () {
@@ -22,3 +24,13 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // home
 Route::get('home', [HomeController::class, 'index'])->name('home.index');
+
+// customers
+Route::resource('customers', CustomerController::class);
+
+// cars
+Route::get('cars/favourite', [CarController::class, 'favouriteCars'])->name('cars.favouriteCars');
+Route::resource('cars', CarController::class);
+
+
+

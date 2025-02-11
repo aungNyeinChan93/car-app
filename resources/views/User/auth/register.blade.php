@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('layouts.guest', ['cssClass' => 'Signup'])
 
 @section('content')
     <main>
@@ -49,14 +49,8 @@
                         <button type="submit" class="btn btn-primary btn-login w-full">Register</button>
 
                         <div class="grid grid-cols-2 gap-1 social-auth-buttons">
-                            <button class="btn btn-default flex justify-center items-center gap-1">
-                                <img src="/img/google.png" alt="" style="width: 20px" />
-                                Google
-                            </button>
-                            <button class="btn btn-default flex justify-center items-center gap-1">
-                                <img src="/img/facebook.png" alt="" style="width: 20px" />
-                                Facebook
-                            </button>
+                            <x-social-login src='/img/google.png'> Google</x-social-login>
+                            <x-social-login src='/img/facebook.png'> Facebook</x-social-login>
                         </div>
                         <div class="login-text-dont-have-account">
                             Already have an account? -

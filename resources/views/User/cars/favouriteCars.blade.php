@@ -31,8 +31,8 @@
                                 <p class="car-item-price">{{ $favCar->price }} $</p>
                                 <hr />
                                 <p class="m-0">
-                                    <span class="car-item-badge">{{ $favCar->carType->name }}</span>
-                                    <span class="car-item-badge">{{ $favCar->fuelType->name }}</span>
+                                    <span class="car-item-badge">{{ optional($favCar->carType)->name }}</span>
+                                    <span class="car-item-badge">{{ $favCar->fuelType?->name }}</span>
                                 </p>
                             </div>
                         </div>

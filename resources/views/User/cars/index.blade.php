@@ -28,6 +28,7 @@
                                         <th>Title</th>
                                         <th>Date</th>
                                         <th>Published Date</th>
+                                        <th>Owner</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -41,6 +42,9 @@
                                             <td>{{ $car->name }}</td>
                                             <td>{{ Carbon::parse($car->created_at)->format('d-m-Y') }}</td>
                                             <td>{{ Carbon::parse($car->publish_date)->format('d-m-Y') }}</td>
+                                            <td>
+                                                <span class="badge">{{ $car->user->name }}</span>
+                                            </td>
                                             <td class="">
                                                 <a href="{{ route('cars.edit', $car->id) }}"
                                                     class="btn btn-edit inline-flex items-center">

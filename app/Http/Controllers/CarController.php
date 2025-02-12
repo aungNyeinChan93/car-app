@@ -69,6 +69,15 @@ class CarController extends Controller
     //
     public function favouriteCars()
     {
-        return view('User.cars.favouriteCars');
+        // $myCars = Car::query()
+        //     ->with(['maker', 'user', 'models', 'carType', 'fuelType', 'images', 'favouriteUsers'])
+        //     ->where('user_id', auth()->user()->id)
+        //     ->get();
+
+        $myFavCars = auth()->user()->favouriteCars()
+            ->with(['maker', 'user', 'models', 'carType', 'fuelType', 'images', 'favouriteUsers'])
+            ->get();
+
+        return view('User.cars.favouriteCars', compact('myFavCars'));
     }
 }

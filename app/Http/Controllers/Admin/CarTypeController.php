@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\CarType;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CarTypeController extends Controller
 {
@@ -13,7 +12,10 @@ class CarTypeController extends Controller
      */
     public function index()
     {
-        $car_types = CarType::query()->get();
+
+        $car_types = CarType::query()
+            ->filter(request(['search']))
+            ->simplePaginate(8);
         return view('Admin.car-types.index', compact('car_types'));
 
     }
@@ -37,7 +39,7 @@ class CarTypeController extends Controller
 
         $car_type = CarType::create($fileds);
 
-        return back()->with('success', "{$car_type->name} Create Success!");
+        return to_route('car-types.index')->with('success', "{$car_type->name} Create Success!");
     }
 
     /**
@@ -51,24 +53,32 @@ class CarTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(CarType $carType)
     {
-        //
+        return view('admin.car-types.edit', compact('carType'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, CarType $carType)
     {
-        //
+        $fields = $request->validate([
+            'name' => 'required|string|max:255|unique:car_types,name,' . $carType->id,
+        ]);
+
+        $carType->update($fields);
+
+        return back()->with('success', "{$carType->name} Update Success!");
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CarType $carType)
     {
-        //
+        $carType->delete();
+        return back()->with('success', "$carType->name delete Success!");
     }
 }

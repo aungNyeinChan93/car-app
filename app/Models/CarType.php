@@ -11,4 +11,11 @@ class CarType extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function scopeFilter($query, $filters)
+    {
+        if ($filters['search'] ?? false) {
+            $query->whereAny(['name'], 'like', '%' . $filters['search'] . '%');
+        }
+    }
 }

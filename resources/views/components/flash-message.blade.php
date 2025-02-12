@@ -1,4 +1,4 @@
-<div role="alert" class="rounded-xl border border-gray-100 bg-white p-4">
+<div role="alert" class="rounded-xl border border-gray-100 bg-green-200 p-4">
     <div class="flex items-start gap-4">
         <span class="text-green-600">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

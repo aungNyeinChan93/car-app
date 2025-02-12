@@ -44,7 +44,7 @@
                     @can('admin')
                     @endcan
                     <li>
-                        <a href="{{ route('car-types.create') }}">Create CarTypes</a>
+                        <a href="{{ route('car-types.index') }}">Car Types</a>
                     </li>
                     @auth
                         <li>

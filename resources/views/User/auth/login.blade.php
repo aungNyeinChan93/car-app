@@ -3,7 +3,7 @@
 @section('title', 'Login')
 
 @section('content')
-    <main>
+    <main class="p-4 mt-[150px]">
         <div class="container-small page-login">
             <div class="flex" style="gap: 5rem">
                 <div class="auth-page-form">

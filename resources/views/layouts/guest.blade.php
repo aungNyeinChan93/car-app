@@ -26,10 +26,10 @@
 </head>
 
 <body @isset($cssClass)
-    @class(['example-class', $cssClass, 'p-10 mt-[50px]'])
+    @class(['example-class', $cssClass, ''])
 @endisset>
 
-    <main>
+    <main class="w-full h-100">
         @yield('content')
     </main>
 

@@ -6,6 +6,7 @@
             <tr>
                 <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
                 <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Email</th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Roles</th>
                 <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date</th>
                 <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Action</th>
             </tr>
@@ -16,6 +17,14 @@
                 <tr class="odd:bg-gray-50">
                     <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{{ $customer->name }}</td>
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ $customer->email }}</td>
+                    <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                        @foreach ($customer->roles as $role)
+                            <span
+                                class="badge">{{ $role->name }}
+                            </span>
+
+                        @endforeach
+                    </td>
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ $customer->created_at->format('d-m-Y') }}
                     </td>
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">

@@ -1,7 +1,7 @@
 @extends('layouts.guest', ['cssClass' => 'Signup'])
 
 @section('content')
-    <main>
+    <main class="mt-[60px]">
         <div class="container-small page-login">
             <div class="flex" style="gap: 5rem">
                 <div class="auth-page-form">

@@ -31,4 +31,14 @@ class Car extends Model
     {
         return $this->belongsTo(FuelType::class, 'fuel_type_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(CarImage::class);
+    }
+
+    public function favouriteUsers()
+    {
+        return $this->belongsToMany(User::class, 'cars_users');
+    }
 }

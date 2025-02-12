@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -11,7 +12,9 @@ class CarController extends Controller
      */
     public function index()
     {
-        return view('User.cars.index');
+
+        $cars = Car::query()->simplePaginate(2);
+        return view('User.cars.index', compact('cars'));
     }
 
     /**
@@ -57,9 +60,10 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Car $car)
     {
-        //
+        $car->delete();
+        return back()->with('success', "$car->name is delete success!");
     }
 
     //

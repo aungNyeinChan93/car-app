@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Car::class);
     }
+
+    public function favouriteCars()
+    {
+        return $this->belongsToMany(Car::class, 'cars_users');
+    }
 }

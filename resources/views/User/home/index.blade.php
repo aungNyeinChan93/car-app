@@ -43,8 +43,9 @@
                                 Submit your car in our user friendly interface, describe it,
                                 upload photos and the perfect buyer will find it...
                             </p>
-
-                            <button class="btn btn-hero-slider">Add Your Car</button>
+                            <a href="{{ route('cars.create') }}">
+                                <div class="btn btn-hero-slider w-[250px] h-[80px] text-center  ">Add Your Car</div>
+                            </a>
                         </div>
                     </div>
                     <div class="slide-image">

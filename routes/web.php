@@ -39,6 +39,9 @@ Route::group(['prefix' => 'client', 'middleware' => ['auth']], function () {
     Route::get('cars/favourite', [CarController::class, 'favouriteCars'])->name('cars.favouriteCars');
     Route::resource('cars', CarController::class);
 
+    // cars
+    Route::get('cars/favourite', [CarController::class, 'favouriteCars'])->name('cars.favouriteCars');
+    Route::resource('cars', CarController::class);
 });
 
 
@@ -47,6 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     // car_types
     Route::resource('car-types', CarTypeController::class);
+
 
 });
 

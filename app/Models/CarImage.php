@@ -8,4 +8,9 @@ class CarImage extends Model
 {
     //
     protected $guarded = [];
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class, 'car_id');
+    }
 }

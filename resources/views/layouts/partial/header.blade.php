@@ -33,7 +33,7 @@
                 </a>
                 <ul class="submenu">
                     <li>
-                        <a href="my_cars.html">My Cars</a>
+                        <a href="{{ route('cars.index') }}">My Cars</a>
                     </li>
                     <li>
                         <a href="{{ route('cars.favouriteCars') }}">My Favourite Cars</a>

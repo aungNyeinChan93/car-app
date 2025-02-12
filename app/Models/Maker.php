@@ -4,14 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FuelType extends Model
+class Maker extends Model
 {
     //
     protected $guarded = [];
 
+    public function models()
+    {
+        return $this->hasMany(CarModel::class);
+    }
 
     public function cars()
     {
         return $this->hasMany(Car::class);
     }
+
 }

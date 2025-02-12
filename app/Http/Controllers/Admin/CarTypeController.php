@@ -12,12 +12,12 @@ class CarTypeController extends Controller
      */
     public function index()
     {
-
         $car_types = CarType::query()
             ->filter(request(['search']))
-            ->simplePaginate(8);
+            ->latest()
+            ->simplePaginate(8)
+            ->withQueryString();
         return view('Admin.car-types.index', compact('car_types'));
-
     }
 
     /**

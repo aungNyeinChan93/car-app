@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\CarController;
-use App\Jobs\TestJob;
-use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;

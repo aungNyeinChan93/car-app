@@ -18,4 +18,11 @@ class CarType extends Model
             $query->whereAny(['name'], 'like', '%' . $filters['search'] . '%');
         }
     }
+
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+
+
 }

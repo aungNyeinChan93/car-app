@@ -38,14 +38,18 @@
                     <li>
                         <a href="{{ route('cars.favouriteCars') }}">My Favourite Cars</a>
                     </li>
-                    <li>
-                        <a href="{{ route('customers.index') }}">Our Customers</a>
-                    </li>
-                    @can('admin')
-                    @endcan
-                    <li>
-                        <a href="{{ route('car-types.index') }}">Car Types</a>
-                    </li>
+
+                    @foreach (auth()->user()->roles as $role)
+                        @if ($role->name === 'admin')
+                            <li>
+                                <a href="{{ route('customers.index') }}">Our Customers</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('car-types.index') }}">Car Types</a>
+                            </li>
+                        @endif
+                    @endforeach
+
                     @auth
                         <li>
                             <form action="{{ route('logout') }}" method="post">

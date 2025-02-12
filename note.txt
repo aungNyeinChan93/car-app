@@ -2,34 +2,36 @@
 
 -id
 -name
--model
--type (car_type table) =>name
+-maker => name,
+-model => name,maker_id
+-car_type (car_type table) =>name
 -image (car_image table)  => car_id,image,
--fuel type (fuel_type table) => name
+-fuel_type (fuel_type table) => name
 -car_feature (table)
--maker
 -region
--publish date
+-publish_date
 -price
 -address
 -contact
 -description
+-user_id
+
 ________________________________________________________
 
 ## car feature
 
-Air Conditioning
-Power Windows
-Power Door Locks
+Air_Conditioning
+Power_Windows
+Power_DoorLocks
 ABS
-Cruise Control
-Bluetooth Connectivity
-Remote Start
+Cruise_Control
+Bluetooth_Connectivity
+Remote_Start
 GPS Navigation System
-Heated Seats
-Climate Control
-Rear Parking Sensors
-Leather Seats
+Heated_Seats
+Climate_Control
+Rear_ParkingSensors
+Leather_Seats
 ________________________________________________________
 
 

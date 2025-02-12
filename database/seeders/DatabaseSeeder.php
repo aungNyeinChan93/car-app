@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\CarSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RoleSeeder;
+use Database\Seeders\MakerSeeder;
 use Database\Seeders\CarTypeSeeder;
 use Database\Seeders\FuelTypeSeeder;
 
@@ -27,6 +29,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             FuelTypeSeeder::class,
             CarTypeSeeder::class,
+            MakerSeeder::class,
+            CarSeeder::class,
+
         ]);
     }
 }

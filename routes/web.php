@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\CarController;
+use App\Jobs\TestJob;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -45,6 +47,8 @@ Route::group(['prefix' => 'client', 'middleware' => ['auth']], function () {
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
 
+    // car_types
+    Route::resource('car-types', CarTypeController::class);
 
 });
 

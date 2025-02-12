@@ -1,0 +1,38 @@
+##cars table
+
+-id
+-name
+-model
+-type (car_type table) =>name
+-image (car_image table)  => car_id,image,
+-fuel type (fuel_type table) => name
+-car_feature (table)
+-maker
+-region
+-publish date
+-price
+-address
+-contact
+-description
+________________________________________________________
+
+## car feature
+
+Air Conditioning
+Power Windows
+Power Door Locks
+ABS
+Cruise Control
+Bluetooth Connectivity
+Remote Start
+GPS Navigation System
+Heated Seats
+Climate Control
+Rear Parking Sensors
+Leather Seats
+________________________________________________________
+
+
+##
+
+

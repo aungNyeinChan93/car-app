@@ -4,18 +4,19 @@
     <main>
         <div class="container-small">
             <h1 class="car-details-page-title">Add new car</h1>
-            <form action="" method="POST" enctype="multipart/form-data" class="card add-new-car-form">
+            <form action="{{ route('cars.store') }}" method="POST" enctype="multipart/form-data" class="card add-new-car-form">
+                @csrf
                 <div class="form-content">
                     <div class="form-details">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label>Maker</label>
-                                    <select>
-                                        <option value="">Maker</option>
-                                        <option value="bmw">BMW</option>
-                                        <option value="lexus">Lexus</option>
-                                        <option value="mercedes">Mercedes</option>
+                                    <select name="maker_id">
+                                        <option value="#">Select Maker</option>
+                                        @foreach ($makers as $maker)
+                                            <option value="{{ $maker->id }}">{{ $maker->name }}</option>
+                                        @endforeach
                                     </select>
                                     <p class="error-message">This field is required</p>
                                 </div>
@@ -23,12 +24,15 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Model</label>
-                                    <select>
-                                        <option value="">Model</option>
+                                    <select name="car_model_id">
+                                        <option value="#">Model</option>
+                                        @foreach ($models as $model)
+                                            <option value="{{ $model->id }}">{{ $model->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="col">
+                            {{-- <div class="col">
                                 <div class="form-group">
                                     <label>Year</label>
                                     <select>
@@ -70,30 +74,20 @@
                                         <option value="1990">1990</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-group">
                             <label>Car Type</label>
                             <div class="row">
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="car_type" value="sedan" />
-                                        Sedan
-                                    </label>
-                                </div>
-
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="car_type" value="hatchback" />
-                                        Hatchback
-                                    </label>
-                                </div>
-
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="car_type" value="suv" />
-                                        SUV (Sport Utility Vehicle)
-                                    </label>
+                                <div class="col-12">
+                                    <div class="col-3 ">
+                                        @foreach ($carTypes as $type)
+                                            <label class="inline-radio mx-1 p-2">
+                                                <input type="radio" name="car_type_id" value="{{ $type->id }}" />
+                                                {{ $type->name }}
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,160 +95,154 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Price</label>
-                                    <input type="number" placeholder="Price" />
+                                    <input type="number" name="price" placeholder="Price" />
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label>Vin Code</label>
-                                    <input placeholder="Vin Code" />
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Mileage (ml)</label>
-                                    <input placeholder="Mileage" />
+                                    <label>Name</label>
+                                    <input type="text" name="name" placeholder="Name" />
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label>Fuel Type</label>
                             <div class="row">
                                 <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="gasoline" />
-                                        Gasoline
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="diesel" />
-                                        Diesel
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="electric" />
-                                        Electric
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="hybrid" />
-                                        Hybrid
-                                    </label>
+                                    @foreach ($fuelTypes as $fuelType)
+                                        <label class="inline-radio mx-1">
+                                            <input type="radio" name="fuel_type_id" value="{{ $fuelType->id }}" />
+                                            {{ $fuelType->name }}
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label>State/Region</label>
-                                    <select>
-                                        <option value="">State/Region</option>
-                                    </select>
+                                    <label>Reagion</label>
+                                    <input placeholder="region" name="region" />
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <select>
-                                        <option value="">City</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input placeholder="Address" />
+                                    <input placeholder="Address" name="address" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input placeholder="Phone" type='number' name="contact" />
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label>Phone</label>
-                                    <input placeholder="Phone" />
+                                    <label>Published Date</label>
+                                    <input type="date" name="publish_date">
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
+                            <label for="feature"> Feature</label>
                             <div class="row">
                                 <div class="col">
                                     <label class="checkbox">
-                                        <input type="checkbox" name="air_conditioning" value="1" />
+                                        <input type="checkbox" name="Air_Conditioning" />
                                         Air Conditioning
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="power_windows" value="1" />
+                                        <input type="checkbox" name="Power_Windows" />
                                         Power Windows
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="power_door_locks" value="1" />
+                                        <input type="checkbox" name="Power_DoorLocks" />
                                         Power Door Locks
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="abs" value="1" />
+                                        <input type="checkbox" name="ABS" />
                                         ABS
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="cruise_control" value="1" />
+                                        <input type="checkbox" name="Cruise_Control" />
                                         Cruise Control
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="bluetooth_connectivity" value="1" />
+                                        <input type="checkbox" name="Bluetooth_Connectivity" />
                                         Bluetooth Connectivity
                                     </label>
                                 </div>
                                 <div class="col">
                                     <label class="checkbox">
-                                        <input type="checkbox" name="remote_start" value="1" />
+                                        <input type="checkbox" name="Remote_Start" />
                                         Remote Start
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="gps_navigation" value="1" />
+                                        <input type="checkbox" name="GPS" />
                                         GPS Navigation System
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="heated_seats" value="1" />
+                                        <input type="checkbox" name="Heated_Seats" />
                                         Heated Seats
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="climate_control" value="1" />
+                                        <input type="checkbox" name="Climate_Control" />
                                         Climate Control
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="rear_parking_sensors" value="1" />
-                                        Rear Parking Sensors
+                                        <input type="checkbox" name="Bluetooth_Connectivity" />
+                                        Bluetooth Connectivity
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="leather_seats" value="1" />
-                                        Leather Seats
+                                        <input type="checkbox" name="Remote_Start" />
+                                        Remote Start
+                                    </label>
+                                </div>
+
+                                <div class="col">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="GPS" />
+                                        GPS
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="Heated_Seats" />
+                                        Heated Seats
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Detailed Description</label>
-                            <textarea rows="10"></textarea>
+                            <textarea name="description" rows="10">Enter Description</textarea>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label class="checkbox">
                                 <input type="checkbox" name="published" />
                                 Published
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
+
+                    {{-- image --}}
                     <div class="form-images">
                         <div class="form-image-upload">
                             <div class="upload-placeholder">
@@ -264,7 +252,7 @@
                                         d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
                             </div>
-                            <input id="carFormImageUpload" type="file" multiple />
+                            <input id="carFormImageUpload" type="file" multiple name="path[]" />
                         </div>
                         <div id="imagePreviews" class="car-form-images"></div>
                     </div>
@@ -272,7 +260,7 @@
                 <div class="p-medium" style="width: 100%">
                     <div class="flex justify-end gap-1">
                         <button type="button" class="btn btn-default">Reset</button>
-                        <button class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>

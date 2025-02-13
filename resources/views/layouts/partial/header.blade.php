@@ -54,7 +54,7 @@
                     @endforeach
 
                     @foreach (auth()->user()->roles as $role)
-                        @if ($role->name === 'admin' || $role->name === 'superAdmin')
+                        @if ($role->name === 'admin')
                             <li>
                                 <a href="{{ route('car-types.index') }}">Car Types</a>
                             </li>

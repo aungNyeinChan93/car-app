@@ -10,6 +10,7 @@ class CarFeature extends Model
     /** @use HasFactory<\Database\Factories\CarFeatureFactory> */
     use HasFactory;
 
-    protected $guraded = [];
+    protected $guarded = [];
+
 
 }

@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarCreateRequest;
 use App\Models\Car;
+use App\Models\CarFeature;
+use App\Models\CarImage;
+use App\Models\CarModel;
+use App\Models\CarType;
+use App\Models\FuelType;
+use App\Models\Maker;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -12,9 +19,9 @@ class CarController extends Controller
      */
     public function index()
     {
-
-        $cars = Car::query()->simplePaginate(2);
-        return view('User.cars.index', compact('cars'));
+        $carfeature = CarFeature::where('car_id', 1);
+        $cars = Car::query()->simplePaginate(10);
+        return view('User.cars.index', compact('cars', 'carfeature'));
     }
 
     /**
@@ -22,15 +29,47 @@ class CarController extends Controller
      */
     public function create()
     {
-        return view('User.cars.create');
+        $makers = Maker::query()->get();
+        $models = CarModel::query()->get();
+        $carTypes = CarType::query()->get();
+        $fuelTypes = FuelType::query()->get();
+        return view('User.cars.create', compact('makers', 'models', 'carTypes', 'fuelTypes'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CarCreateRequest $carCreateRequest)
     {
-        //
+        $car = Car::create([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
+
+        if (request()->hasFile('path')) {
+            foreach (request()->file('path') as $image) {
+                $path = $image->store('/car_images/', 'public');
+                CarImage::create([
+                    'car_id' => $car->id,
+                    'path' => $path
+                ]);
+            }
+        }
+
+        $carFeature = CarFeature::create([
+            'car_id' => $car->id,
+            'Air_Conditioning' => $carCreateRequest->Air_Conditioning,
+            'Power_Windows' => $carCreateRequest->Power_Windows,
+            'Power_DoorLocks' => $carCreateRequest->Power_DoorLocks,
+            'ABS' => $carCreateRequest->ABS,
+            'Cruise_Control' => $carCreateRequest->Cruise_Control,
+            'Bluetooth_Connectivity' => $carCreateRequest->Bluetooth_Connectivity,
+            'Remote_Start' => $carCreateRequest->Remote_Start,
+            'GPS' => $carCreateRequest->GPS,
+            'Heated_Seats' => $carCreateRequest->Heated_Seats,
+            'Climate_Control' => $carCreateRequest->Climate_Control,
+            'Rear_ParkingSensors' => $carCreateRequest->Rear_ParkingSensors,
+            'Leather_Seats' => $carCreateRequest->Leather_Seats,
+        ]);
+
+        return to_route('cars.index');
     }
 
     /**

@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+
 @endphp
 
 @extends('layouts.app', ['cssClass' => 'Cars Index'])
@@ -14,6 +15,8 @@
                     {{ session('success') }}
                 </x-flash-message>
             @endsession
+        </div>
+        <div class="test">
         </div>
         <main>
             <div>
@@ -36,7 +39,14 @@
                                     @foreach ($cars as $car)
                                         <tr>
                                             <td>
-                                                <img src="/img/cars/Lexus-RX200t-2016/1.jpeg" alt=""
+                                                @php
+                                                    $image = collect($car->images)
+                                                        ->filter(fn($image) => $image)
+                                                        ->first();
+                                                    // $path = collect($car->images)->pluck('path');
+                                                    // dump($path[1]);
+                                                @endphp
+                                                <img src="{{ "/storage/$image->path" }}" alt=""
                                                     class="my-cars-img-thumbnail" />
                                             </td>
                                             <td>{{ $car->name }}</td>

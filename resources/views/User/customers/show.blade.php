@@ -31,6 +31,12 @@
                 @endforeach
             </div>
         </div>
+
+        <x-button href="{{ route('customers.index') }}">Back</x-button>
     </main>
 
 @endsection
+
+@php
+
+@endphp

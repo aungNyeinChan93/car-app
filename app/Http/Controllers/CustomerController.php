@@ -19,6 +19,6 @@ class CustomerController extends Controller
     public function show(Request $request, $id)
     {
         $customer = User::findOrFail($id)->load(['roles', 'cars', 'favouriteCars']);
-        return $customer;
+        return view('User.customers.show', compact('customer'));
     }
 }

@@ -1,12 +1,16 @@
-@props([''])
-
+@props(['car' => ''])
+@php
+    use Carbon\Carbon;
+    $image = collect($car->images)->pluck('path')->first();
+    // dump($image);
+@endphp
 <div class="car-item card">
-    <a href="/view.html">
-        <img src="/img/cars/Lexus-RX200t-2016/1.jpeg" alt="" class="car-item-img rounded-t" />
+    <a href="{{ route('cars.show', $car->id) }}">
+        <img src="{{ asset("/storage/$image") }}" alt="" class="car-item-img rounded-t" />
     </a>
     <div class="p-medium">
         <div class="flex items-center justify-between">
-            <small class="m-0 text-muted">New Jersey</small>
+            <small class="m-0 text-muted">{{ $car->region }}</small>
             <button class="btn-heart">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" style="width: 20px">
@@ -15,12 +19,12 @@
                 </svg>
             </button>
         </div>
-        <h2 class="car-item-title">2016 - Lexus RX200t</h2>
-        <p class="car-item-price">$25,000</p>
+        <h2 class="car-item-title">{{ Carbon::parse($car->publish_date)->format('Y') }} - {{ $car->name }}</h2>
+        <p class="car-item-price">$ {{ $car->price }}</p>
         <hr />
-        <p class="m-0">
-            <span class="car-item-badge">SUV</span>
-            <span class="car-item-badge">Electric</span>
+        <p class="m-2 flex justify-start items-center flex-wrap gap-2">
+            <span class=" car-item-badge">{{ $car->carType?->name }}</span>
+            <span class="car-item-badge">{{ $car->fuelType?->name }}</span>
         </p>
     </div>
 </div>

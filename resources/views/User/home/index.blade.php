@@ -1,7 +1,12 @@
+@props(['cars' => ''])
+
+@php
+
+@endphp
+
 @extends('layouts.app', ['cssClass' => 'Home'])
 
 @section('content')
-
 
     <!-- Home Slider -->
     <section class="hero-slider">
@@ -418,11 +423,11 @@
     <!-- New Cars -->
     <section class="new_cars">
         <div class="container">
-            <h2>Latest Added Cars</h2>
+            <h2 class="p-2 my-4 text-3xl font-blod">Latest Added Cars</h2>
             <div class="car-items-listing">
-                @for ($i = 0; $i <= 14; $i++)
-                    <x-car-item />
-                @endfor
+                @foreach ($cars as $car)
+                    <x-car-item :car="$car" />
+                @endforeach
             </div>
         </div>
     </section>

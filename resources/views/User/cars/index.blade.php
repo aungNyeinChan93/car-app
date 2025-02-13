@@ -49,9 +49,10 @@
                                                     class="my-cars-img-thumbnail" />
                                             </td>
                                             <td>{{ $car->name }}</td>
-                                            <td>{{ Carbon::parse($car->created_at)->format('d-m-Y') }}</td>
-                                            <td>{{ Carbon::parse($car->publish_date)->format('d-m-Y') }}</td>
-                                            <td>
+                                            <td class="w-[100px]">{{ Carbon::parse($car->created_at)->format('d-m-Y') }}
+                                            </td>
+                                            <td>{{ Carbon::parse($car->publish_date)->format('Y') }}</td>
+                                            <td class=" w-[130px]">
                                                 <span class="badge">{{ $car->user->name }}</span>
                                             </td>
 

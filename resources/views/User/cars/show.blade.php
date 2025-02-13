@@ -1,7 +1,8 @@
-@props([])
+@props(['car' => ''])
 
 @php
     use Carbon\Carbon;
+
     $carSpecfications = collect($car->carFeature)->map(fn($spec) => $spec === 'on')->all();
     // dump($carSpecfications);
 @endphp
@@ -126,7 +127,7 @@
                     </a>
                 </div>
             </div>
-            <x-button href="{{ route('cars.index') }}">Back</x-button>
+            <x-button onclick="history.back()">Back</x-button>
         </div>
 
     </main>

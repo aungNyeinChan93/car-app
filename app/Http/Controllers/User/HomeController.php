@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Car;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
     //index
     public function index()
     {
-        return view('User.home.index');
+        $cars = Car::query()->with(['user'])->latest()->get();
+        return view('User.home.index', compact('cars'));
     }
 }

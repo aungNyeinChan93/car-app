@@ -25,13 +25,14 @@
                     <div class="card p-medium">
                         <div class="table-responsive">
                             <table class="table">
-                                <thead>
+                                <thead class="">
                                     <tr>
                                         <th>Image</th>
                                         <th>Title</th>
                                         <th>Date</th>
                                         <th>Published Date</th>
                                         <th>Owner</th>
+                                        <th>Features</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -40,9 +41,7 @@
                                         <tr>
                                             <td>
                                                 @php
-                                                    $image = collect($car->images)
-                                                        ->filter(fn($image) => $image)
-                                                        ->first();
+                                                    $image = collect($car->images)->map(fn($image) => $image)->first();
                                                     // $path = collect($car->images)->pluck('path');
                                                     // dump($path[1]);
                                                 @endphp
@@ -55,7 +54,22 @@
                                             <td>
                                                 <span class="badge">{{ $car->user->name }}</span>
                                             </td>
-                                            <td class="">
+
+                                            <td>
+                                                @php
+                                                    $feature = collect($car->carfeature)
+                                                        ->filter(fn($feature) => $feature === 'on')
+                                                        ->all();
+                                                @endphp
+
+                                                <div class="p-3 flex flex-wrap justify-start items-center">
+                                                    @foreach ($feature as $key => $value)
+                                                        <span class="badge text-xs my-2">{{ $key }} </span>
+                                                    @endforeach
+                                                </div>
+                                            </td>
+
+                                            <td class="flex justify-between items-center">
                                                 <a href="{{ route('cars.edit', $car->id) }}"
                                                     class="btn btn-edit inline-flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"

@@ -19,9 +19,8 @@ class CarController extends Controller
      */
     public function index()
     {
-        $carfeature = CarFeature::where('car_id', 1);
         $cars = Car::query()->simplePaginate(10);
-        return view('User.cars.index', compact('cars', 'carfeature'));
+        return view('User.cars.index', compact('cars'));
     }
 
     /**

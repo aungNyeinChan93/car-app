@@ -41,4 +41,9 @@ class Car extends Model
     {
         return $this->belongsToMany(User::class, 'cars_users');
     }
+
+    public function carFeature()
+    {
+        return $this->hasOne(CarFeature::class);
+    }
 }

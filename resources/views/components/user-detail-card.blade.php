@@ -10,7 +10,6 @@
             <dt class="font-medium text-gray-900">Customer Name</dt>
             <dd class="text-gray-700 sm:col-span-2">{{ $customer->name }}</dd>
         </div>
-
         <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
             <dt class="font-medium text-gray-900">Email</dt>
             <dd class="text-gray-700 sm:col-span-2">{{ $customer->email }}</dd>

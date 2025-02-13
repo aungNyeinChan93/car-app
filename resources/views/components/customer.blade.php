@@ -19,16 +19,15 @@
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ $customer->email }}</td>
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">
                         @foreach ($customer->roles as $role)
-                            <span
-                                class="badge">{{ $role->name }}
+                            <span class="badge">{{ $role->name }}
                             </span>
-
                         @endforeach
                     </td>
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ $customer->created_at->format('d-m-Y') }}
                     </td>
                     <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                        <a class="px-2 py-1 text-white rounded bg-blue-600 " href="#">Detail</a>
+                        <a class="px-2 py-1 text-white rounded bg-blue-600 "
+                            href="{{ route('customers.show', $customer->id) }}">Detail</a>
                     </td>
                 </tr>
             @empty

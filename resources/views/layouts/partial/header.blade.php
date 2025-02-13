@@ -1,3 +1,7 @@
+@php
+    use App\Models\CarType;
+@endphp
+
 <header class="navbar">
     <div class="container navbar-content">
         <a href="{{ route('home.index') }}" class="logo-wrapper">
@@ -32,18 +36,25 @@
                     </svg>
                 </a>
                 <ul class="submenu">
+
                     <li>
-                        <a href="{{ route('cars.index') }}">My Cars</a>
+                        <a href="{{ route('cars.index') }}">Cars Lists</a>
                     </li>
+
                     <li>
                         <a href="{{ route('cars.favouriteCars') }}">My Favourite Cars</a>
                     </li>
 
                     @foreach (auth()->user()->roles as $role)
-                        @if ($role->name === 'admin')
+                        @if ($role->name === 'superAdmin')
                             <li>
                                 <a href="{{ route('customers.index') }}">Our Customers</a>
                             </li>
+                        @endif
+                    @endforeach
+
+                    @foreach (auth()->user()->roles as $role)
+                        @if ($role->name === 'admin' || $role->name === 'superAdmin')
                             <li>
                                 <a href="{{ route('car-types.index') }}">Car Types</a>
                             </li>
@@ -58,7 +69,20 @@
                             </form>
                         </li>
                     @endauth
+
+                    {{-- guard by policy --}}
+                    {{-- @can('create', CarType::class)
+                            <li>
+                                <a href="{{ route('customers.index') }}">Our Customers</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('car-types.index') }}">Car Types</a>
+                            </li>
+                        @endcan --}}
                 </ul>
+            </div>
+            <div>
+                <span class="font-bold text-sm uppercase"> {{ auth()->user()->name }}</span>
             </div>
             @guest
                 <a href="{{ route('register') }}" class="btn btn-primary btn-signup">

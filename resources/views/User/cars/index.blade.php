@@ -9,6 +9,7 @@
 
 @section('content')
     <section class="w-full min-h-screen">
+
         <div>
             @session('success')
                 <x-flash-message>
@@ -16,8 +17,7 @@
                 </x-flash-message>
             @endsession
         </div>
-        <div class="test">
-        </div>
+
         <main>
             <div>
                 <div class="container">
@@ -70,6 +70,16 @@
                                             </td>
 
                                             <td class="flex justify-between items-center">
+                                                <a href="{{ route('cars.show', $car->id) }}"
+                                                    class="btn btn-edit inline-flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        style="width: 12px; margin-right: 5px">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                                    </svg>
+                                                    Detail
+                                                </a>
                                                 <a href="{{ route('cars.edit', $car->id) }}"
                                                     class="btn btn-edit inline-flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"

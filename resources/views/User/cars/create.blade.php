@@ -3,24 +3,32 @@
 @section('content')
     <main>
         <div class="container-small">
-            <h1 class="car-details-page-title">Add new car</h1>
+            <h1 class="car-details-page-title text-2xl font-bold p-2">Add new car</h1>
+
+            <div class="my-2">
+                @if ($errors->any())
+                    <x-error-message :errors="$errors->all()"></x-error-message>
+                @endif
+            </div>
+
             <form action="{{ route('cars.store') }}" method="POST" enctype="multipart/form-data" class="card add-new-car-form">
                 @csrf
                 <div class="form-content">
                     <div class="form-details">
                         <div class="row">
+
                             <div class="col">
                                 <div class="form-group">
                                     <label>Maker</label>
                                     <select name="maker_id">
-                                        <option value="#">Select Maker</option>
+                                        <option>Select Maker</option>
                                         @foreach ($makers as $maker)
                                             <option value="{{ $maker->id }}">{{ $maker->name }}</option>
                                         @endforeach
                                     </select>
-                                    <p class="error-message">This field is required</p>
                                 </div>
                             </div>
+
                             <div class="col">
                                 <div class="form-group">
                                     <label>Model</label>

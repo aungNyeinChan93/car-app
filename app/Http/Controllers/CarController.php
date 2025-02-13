@@ -19,7 +19,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::query()->simplePaginate(10);
+        $cars = Car::query()->latest()->simplePaginate(10);
         return view('User.cars.index', compact('cars'));
     }
 
@@ -52,7 +52,7 @@ class CarController extends Controller
             }
         }
 
-        $carFeature = CarFeature::create([
+        CarFeature::create([
             'car_id' => $car->id,
             'Air_Conditioning' => $carCreateRequest->Air_Conditioning,
             'Power_Windows' => $carCreateRequest->Power_Windows,
@@ -68,15 +68,16 @@ class CarController extends Controller
             'Leather_Seats' => $carCreateRequest->Leather_Seats,
         ]);
 
-        return to_route('cars.index');
+        return to_route('cars.index')->with('success', "$car->name successfully created!");
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Car $car)
     {
-        return view('User.cars.show');
+        $car->load(['maker', 'user', 'models', 'carType', 'fuelType', 'images', 'favouriteUsers', 'carFeature']);
+        return view('User.cars.show', compact('car'));
     }
 
     /**

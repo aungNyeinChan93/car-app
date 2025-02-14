@@ -38,4 +38,7 @@
             @endforeach
         </tbody>
     </table>
+    <div class="mt-3">
+        <x-button href="{{ route('home.index') }}">Back</x-button>
+    </div>
 </div>

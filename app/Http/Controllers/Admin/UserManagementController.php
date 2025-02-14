@@ -28,7 +28,7 @@ class UserManagementController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'roles' => 'required'
+            'roles' => 'nullable'
         ]);
 
         $user = User::findOrFail($request->id);

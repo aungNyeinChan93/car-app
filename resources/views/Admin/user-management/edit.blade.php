@@ -46,6 +46,8 @@
                                     <dt class="font-medium text-gray-900">Action</dt>
                                     <dd class="text-gray-700 sm:col-span-2">
                                         <x-button type="submit"> Submit</x-button>
+                                        <x-button type="button" onclick="history.back()"
+                                            class="!bg-gray-400 !hover:bg-gray-500"> Back</x-button>
                                     </dd>
                                 </div>
                             </form>

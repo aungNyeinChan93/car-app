@@ -46,15 +46,17 @@
                     </li>
 
                     @foreach (auth()->user()->roles as $role)
-                        @if ($role->name === 'superAdmin')
+                        @if ($role->name === 'superAdmin' && $role->name !== 'suspended')
                             <li>
                                 <a href="{{ route('customers.index') }}">Our Customers</a>
                             </li>
-                        @endif
-                    @endforeach
-
-                    @foreach (auth()->user()->roles as $role)
-                        @if ($role->name === 'admin')
+                            <li>
+                                <a href="{{ route('user_management.index') }}">User Management</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('car-types.index') }}">Car Types</a>
+                            </li>
+                        @elseif ($role->name === 'admin' && $role->name !== 'suspended')
                             <li>
                                 <a href="{{ route('car-types.index') }}">Car Types</a>
                             </li>

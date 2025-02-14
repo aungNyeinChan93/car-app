@@ -14,7 +14,6 @@
         <h1 class="text-2xl font-bold ">User Management </h1>
         <x-user-table :users="$users"></x-user-table>
 
-
     </main>
 
 @endsection

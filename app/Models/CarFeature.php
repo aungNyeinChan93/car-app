@@ -18,6 +18,8 @@ class CarFeature extends Model
 
     protected $guarded = [];
 
+    protected $primaryKey = 'car_id';
+
     public function car()
     {
         return $this->belongsTo(Car::class, 'car_id');

@@ -29,7 +29,7 @@ return new class extends Migration {
             $table->string('contact')->nullable();
             $table->text('description')->nullable();
             $table->timestamp('publish_date')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();  //for SoftDeletes trait (deleted_at)
             $table->timestamps();
         });
     }

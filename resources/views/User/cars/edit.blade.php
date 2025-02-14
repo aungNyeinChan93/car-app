@@ -1,99 +1,73 @@
+@props(['car', 'makers', 'models', 'carTypes', 'fuelTypes'])
+
+@php
+    // dump($car->carFeature->Air_Conditioning);
+@endphp
+
 @extends('layouts.app', ['cssClass' => 'cars edit'])
+
+@section('title', 'Car Edit')
 
 @section('content')
     <main>
         <div class="container-small">
-            <h1 class="car-details-page-title">Edit Car: Lexus NX200t - 2016</h1>
-            <form action="" class="card add-new-car-form">
+            <h1 class="car-details-page-title text-2xl font-bold p-2">Edit Car</h1>
+
+            <div class="my-2">
+                @if ($errors->any())
+                    <x-error-message :errors="$errors->all()"></x-error-message>
+                @endif
+            </div>
+
+            <form action="{{ route('cars.update', $car) }}" method="POST" enctype="multipart/form-data"
+                class="card add-new-car-form">
+                @csrf
+                @method('PUT')
                 <div class="form-content">
                     <div class="form-details">
                         <div class="row">
+
                             <div class="col">
                                 <div class="form-group">
                                     <label>Maker</label>
-                                    <select>
-                                        <option value="">Maker</option>
-                                        <option value="bmw">BMW</option>
-                                        <option value="lexus">Lexus</option>
-                                        <option value="mercedes">Mercedes</option>
+                                    <select name="maker_id">
+                                        <option>Select Maker</option>
+                                        @foreach ($makers as $maker)
+                                            <option @if ($car->maker?->name === $maker->name) selected @endif
+                                                value="{{ $maker->id }}">{{ $maker->name }}</option>
+                                        @endforeach
                                     </select>
-                                    <p class="error-message">This field is required</p>
                                 </div>
                             </div>
+
                             <div class="col">
                                 <div class="form-group">
                                     <label>Model</label>
-                                    <select>
-                                        <option value="">Model</option>
+                                    <select name="car_model_id">
+                                        <option value="#">Model</option>
+                                        @foreach ($models as $model)
+                                            <option @if ($car->models?->name === $model->name) selected @endif
+                                                value="{{ $model->id }}">
+                                                {{ $model->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Year</label>
-                                    <select>
-                                        <option value="">Year</option>
-                                        <option value="2024">2024</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2021">2021</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2018">2018</option>
-                                        <option value="2017">2017</option>
-                                        <option value="2016">2016</option>
-                                        <option value="2015">2015</option>
-                                        <option value="2014">2014</option>
-                                        <option value="2013">2013</option>
-                                        <option value="2012">2012</option>
-                                        <option value="2011">2011</option>
-                                        <option value="2010">2010</option>
-                                        <option value="2009">2009</option>
-                                        <option value="2008">2008</option>
-                                        <option value="2007">2007</option>
-                                        <option value="2006">2006</option>
-                                        <option value="2005">2005</option>
-                                        <option value="2004">2004</option>
-                                        <option value="2003">2003</option>
-                                        <option value="2002">2002</option>
-                                        <option value="2001">2001</option>
-                                        <option value="2000">2000</option>
-                                        <option value="1999">1999</option>
-                                        <option value="1998">1998</option>
-                                        <option value="1997">1997</option>
-                                        <option value="1996">1996</option>
-                                        <option value="1995">1995</option>
-                                        <option value="1994">1994</option>
-                                        <option value="1993">1993</option>
-                                        <option value="1992">1992</option>
-                                        <option value="1991">1991</option>
-                                        <option value="1990">1990</option>
-                                    </select>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="form-group">
                             <label>Car Type</label>
                             <div class="row">
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="car_type" value="sedan" />
-                                        Sedan
-                                    </label>
-                                </div>
-
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="car_type" value="hatchback" />
-                                        Hatchback
-                                    </label>
-                                </div>
-
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="car_type" value="suv" />
-                                        SUV (Sport Utility Vehicle)
-                                    </label>
+                                <div class="col-12">
+                                    <div class="col-3 ">
+                                        @foreach ($carTypes as $type)
+                                            <label class="inline-radio mx-1 p-2">
+                                                <input type="radio" name="car_type_id" value="{{ $type->id }}"
+                                                    @if ($car->carType->name === $type->name) checked @endif />
+                                                {{ $type->name }}
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,194 +75,220 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Price</label>
-                                    <input type="number" placeholder="Price" />
+                                    <input type="number" name="price" placeholder="Price"
+                                        value="{{ old('price', $car->price) }}" />
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label>Vin Code</label>
-                                    <input placeholder="Vin Code" />
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Mileage (ml)</label>
-                                    <input placeholder="Mileage" />
+                                    <label>Name</label>
+                                    <input type="text" name="name" placeholder="Name"
+                                        value="{{ old('name', $car->name) }}" />
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label>Fuel Type</label>
                             <div class="row">
                                 <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="gasoline" />
-                                        Gasoline
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="diesel" />
-                                        Diesel
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="electric" />
-                                        Electric
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label class="inline-radio">
-                                        <input type="radio" name="fuel_type" value="hybrid" />
-                                        Hybrid
-                                    </label>
+                                    @foreach ($fuelTypes as $fuelType)
+                                        <label class="inline-radio mx-1">
+                                            <input type="radio" name="fuel_type_id" value="{{ $fuelType->id }}"
+                                                @if ($car->fuelType->name === $fuelType->name) checked @endif />
+                                            {{ $fuelType->name }}
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label>State/Region</label>
-                                    <select>
-                                        <option value="">State/Region</option>
-                                    </select>
+                                    <label>Reagion</label>
+                                    <input placeholder="region" name="region" value="{{ old('region', $car->region) }}" />
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <select>
-                                        <option value="">City</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input placeholder="Address" />
+                                    <input placeholder="Address" name="address"
+                                        value="{{ old('address', $car->address) }}" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input placeholder="Phone" type='number' name="contact"
+                                        value="{{ old('contact', $car->contact) }}" />
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label>Phone</label>
-                                    <input placeholder="Phone" />
+                                    <label>Published Date</label>
+                                    <input type="date" name="publish_date"
+                                        value="{{ old('publish_date', $car->publish_date) }}">
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
+                            <label for="feature"> Feature</label>
                             <div class="row">
                                 <div class="col">
                                     <label class="checkbox">
-                                        <input type="checkbox" name="air_conditioning" value="1" />
+                                        <input type="checkbox" name="Air_Conditioning"
+                                            @isset($car->carFeature->Air_Conditioning)
+                                            checked
+                                        @endisset />
                                         Air Conditioning
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="power_windows" value="1" />
+                                        <input type="checkbox" name="Power_Windows"
+                                            @isset($car->carFeature->Power_Windows)
+                                        checked
+                                    @endisset />
                                         Power Windows
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="power_door_locks" value="1" />
+                                        <input type="checkbox" name="Power_DoorLocks"
+                                            @isset($car->carFeature->Power_DoorLocks)
+                                        checked
+                                    @endisset />
                                         Power Door Locks
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="abs" value="1" />
+                                        <input type="checkbox" name="ABS"
+                                            @isset($car->carFeature->ABS)
+                                        checked
+                                    @endisset />
                                         ABS
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="cruise_control" value="1" />
+                                        <input type="checkbox" name="Cruise_Control"
+                                            @isset($car->carFeature->Cruise_Control)
+                                        checked
+                                    @endisset />
                                         Cruise Control
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="bluetooth_connectivity" value="1" />
+                                        <input type="checkbox" name="Bluetooth_Connectivity"
+                                            @isset($car->carFeature->Bluetooth_Connectivity)
+                                        checked
+                                    @endisset />
                                         Bluetooth Connectivity
                                     </label>
                                 </div>
                                 <div class="col">
                                     <label class="checkbox">
-                                        <input type="checkbox" name="remote_start" value="1" />
+                                        <input type="checkbox" name="Remote_Start"
+                                            @isset($car->carFeature->Remote_Start)
+                                        checked
+                                    @endisset />
                                         Remote Start
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="gps_navigation" value="1" />
+                                        <input type="checkbox" name="GPS"
+                                            @isset($car->carFeature->GPS)
+                                        checked
+                                    @endisset />
                                         GPS Navigation System
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="heated_seats" value="1" />
+                                        <input type="checkbox" name="Heated_Seats"
+                                            @isset($car->carFeature->Heated_Seats)
+                                        checked
+                                    @endisset />
                                         Heated Seats
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="climate_control" value="1" />
+                                        <input type="checkbox" name="Climate_Control"
+                                            @isset($car->carFeature->Climate_Control)
+                                        checked
+                                    @endisset />
                                         Climate Control
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="rear_parking_sensors" value="1" />
-                                        Rear Parking Sensors
+                                        <input type="checkbox" name="Bluetooth_Connectivity"
+                                            @isset($car->carFeature->Bluetooth_Connectivity)
+                                        checked
+                                    @endisset />
+                                        Bluetooth Connectivity
                                     </label>
 
                                     <label class="checkbox">
-                                        <input type="checkbox" name="leather_seats" value="1" />
-                                        Leather Seats
+                                        <input type="checkbox" name="Remote_Start"
+                                            @isset($car->carFeature->Remote_Start)
+                                        checked
+                                    @endisset />
+                                        Remote Start
+                                    </label>
+                                </div>
+
+                                <div class="col">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="GPS"
+                                            @isset($car->carFeature->GPS)
+                                        checked
+                                    @endisset />
+                                        GPS
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="Heated_Seats"
+                                            @isset($car->carFeature->Heated_Seats)
+                                        checked
+                                    @endisset />
+                                        Heated Seats
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Detailed Description</label>
-                            <textarea rows="10"></textarea>
+                            <textarea name="description" rows="10">{{ $car->description }}</textarea>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label class="checkbox">
                                 <input type="checkbox" name="published" />
                                 Published
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
+
+                    {{-- image --}}
                     <div class="form-images">
-                        <p class="my-large">
-                            Manage your images
-                            <a href="/car_images.html">From here</a>
-                        </p>
-                        <div class="car-form-images">
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/1.jpeg" alt="" />
-                            </a>
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/2.jpeg" alt="" />
-                            </a>
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/3.jpeg" alt="" />
-                            </a>
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/4.jpeg" alt="" />
-                            </a>
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/5.jpeg" alt="" />
-                            </a>
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/6.jpeg" alt="" />
-                            </a>
-                            <a class="car-form-image-preview">
-                                <img src="/img/cars/Lexus-RX200t-2016/7.jpeg" alt="" />
-                            </a>
+                        <div class="form-image-upload">
+                            <div class="upload-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" style="width: 48px">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </div>
+                            <input id="carFormImageUpload" type="file" multiple name="path[]" />
                         </div>
+                        <div id="imagePreviews" class="car-form-images"></div>
                     </div>
                 </div>
                 <div class="p-medium" style="width: 100%">
                     <div class="flex justify-end gap-1">
                         <button type="button" class="btn btn-default">Reset</button>
-                        <button class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>

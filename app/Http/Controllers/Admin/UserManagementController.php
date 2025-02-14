@@ -22,4 +22,20 @@ class UserManagementController extends Controller
         $roles = Role::query()->get();
         return view('admin.user-management.edit', compact('user', 'roles'));
     }
+
+    // store
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'roles' => 'required'
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        $user->roles()->sync($request->roles);
+
+        return to_route('user_management.index')->with('success', 'User Roles update Success!');
+
+    }
 }

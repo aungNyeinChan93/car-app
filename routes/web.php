@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     // user management
     Route::get('user-management', [UserManagementController::class, 'index'])->name('user_management.index');
     Route::get('user-management/{user}/edit', [UserManagementController::class, 'edit'])->name('user_management.edit');
+    Route::post('user-management/store', [UserManagementController::class, 'store'])->name('user_management.store');
 
 });
 

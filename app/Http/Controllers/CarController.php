@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CarCreateRequest;
 use App\Models\Car;
-use App\Models\CarFeature;
+use App\Models\Maker;
+use App\Models\CarType;
 use App\Models\CarImage;
 use App\Models\CarModel;
-use App\Models\CarType;
 use App\Models\FuelType;
-use App\Models\Maker;
+use App\Models\CarFeature;
 use Illuminate\Http\Request;
+use App\Http\Requests\CarCreateRequest;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CarController extends Controller
 {
@@ -20,6 +21,7 @@ class CarController extends Controller
     public function index()
     {
         $cars = Car::query()->latest()->simplePaginate(5);
+
         return view('User.cars.index', compact('cars'));
     }
 
@@ -67,6 +69,8 @@ class CarController extends Controller
             'Rear_ParkingSensors' => $carCreateRequest->Rear_ParkingSensors,
             'Leather_Seats' => $carCreateRequest->Leather_Seats,
         ]);
+
+        Alert::success('Success', 'Created Success!');
 
         return to_route('cars.index')->with('success', "$car->name successfully created!");
     }

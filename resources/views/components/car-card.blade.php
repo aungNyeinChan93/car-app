@@ -6,7 +6,7 @@
     $path = collect($car->images)->map(fn($image) => $image->path)->first();
 @endphp
 
-<a href="{{ route('cars.show', $car->id) }}" class="group relative block bg-black min-h-[400px] ">
+<a href="{{ route('cars.show', $car->id) }}" class="group relative block bg-black max-h-[400px] overflow-hidden ">
     <img alt="" src="{{ asset('/storage/' . $path) }}"
         class="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50" />
 

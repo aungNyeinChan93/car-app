@@ -10,17 +10,17 @@
 @section('content')
     <section class="w-full min-h-screen">
 
-        <div>
-            @session('success')
-                <x-flash-message>
-                    {{ session('success') }}
-                </x-flash-message>
-            @endsession
-        </div>
 
         <main>
             <div>
                 <div class="container">
+                    <div>
+                        @session('success')
+                            <x-flash-message>
+                                {{ session('success') }}
+                            </x-flash-message>
+                        @endsession
+                    </div>
                     <h1 class="car-details-page-title p-2 text-2xl font-bold">Cars Lists</h1>
                     <div class="card p-medium">
                         <div class="table-responsive">
@@ -52,8 +52,8 @@
                                             <td class="w-[100px]">{{ Carbon::parse($car->created_at)->format('d-m-Y') }}
                                             </td>
                                             <td>{{ Carbon::parse($car->publish_date)->format('Y') }}</td>
-                                            <td class=" w-[130px]">
-                                                <span class="badge">{{ $car->user->name }}</span>
+                                            <td class=" w-[150px]">
+                                                <span class="badge !bg-red-400">{{ $car->user->name }}</span>
                                             </td>
 
                                             <td>

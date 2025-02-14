@@ -31,9 +31,10 @@
 
         <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
             <dt class="font-medium text-gray-900">Customer's Cars</dt>
-            <dd class="text-gray-700 sm:col-span-2 mt-2 flex flex-wrap justify-between items-center  ">
+            <dd class="text-gray-700 sm:col-span-2 mt-2 flex flex-wrap justify-start items-center  ">
                 @foreach ($customer->cars as $car)
-                    <span class="px-4 py-2 my-1 rounded-full bg-green-300 hover:bg-green-400">{{ $car->name }}</span>
+                    <span
+                        class="px-4 py-2 my-1 mx-1 rounded-full bg-green-300 hover:bg-green-400">{{ $car->name }}</span>
                 @endforeach
             </dd>
         </div>

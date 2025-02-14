@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CarTypeController;
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -50,6 +51,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
     // customers
     Route::resource('customers', CustomerController::class)->middleware('superAdmin');
+
+    // user management
+    Route::get('user-management', [UserManagementController::class, 'index'])->name('user_management.index');
+    Route::get('user-management/{user}/edit', [UserManagementController::class, 'edit'])->name('user_management.edit');
 
 });
 

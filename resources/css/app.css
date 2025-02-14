@@ -6,4 +6,7 @@
     .badge {
         @apply px-2 py-1 rounded-full bg-slate-400 text-slate-100 hover:bg-slate-500 ms-1;
     }
+    .base-btn {
+        @apply px-4 py-2 rounded bg-gray-400 hover:bg-gray-500 text-white inline;
+    }
 }

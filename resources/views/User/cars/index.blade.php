@@ -41,12 +41,14 @@
                                         <tr>
                                             <td>
                                                 @php
-                                                    $image = collect($car->images)->map(fn($image) => $image)->first();
+                                                    $image =
+                                                        collect($car->images)->map(fn($image) => $image)->first() ??
+                                                        null;
                                                     // $path = collect($car->images)->pluck('path');
                                                     // dump($path[1]);
                                                 @endphp
-                                                <img src="{{ "/storage/$image->path" }}" alt=""
-                                                    class="my-cars-img-thumbnail" />
+                                                <img src="{{ isset($image->path) ? "/storage/$image->path" : null }}"
+                                                    alt="" class="my-cars-img-thumbnail" />
                                             </td>
                                             <td>{{ $car->name }}</td>
                                             <td class="w-[100px]">{{ Carbon::parse($car->created_at)->format('d-m-Y') }}

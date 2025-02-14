@@ -11,6 +11,7 @@ use App\Models\CarModel;
 use App\Models\FuelType;
 use App\Models\CarFeature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CarEditRequest;
 use App\Http\Requests\CarCreateRequest;
@@ -46,51 +47,56 @@ class CarController extends Controller
      */
     public function store(CarCreateRequest $carCreateRequest)
     {
-        // first approach
-        // $car = Car::create([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
+        try {
+            // first approach
+            // $car = Car::create([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
 
-        // sec approach
-        // $car = new Car();
-        // $car->fill([...$carCreateRequest->validated(), 'user_id' => Auth::id()]);
-        // $car->save();
+            // sec approach
+            // $car = new Car();
+            // $car->fill([...$carCreateRequest->validated(), 'user_id' => Auth::id()]);
+            // $car->save();
 
-        // third approach
-        $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
-        $car->save();
+            // third approach
+            DB::beginTransaction();
 
-        if (request()->hasFile('path')) {
-            foreach (request()->file('path') as $image) {
-                $path = $image->store('/car_images/', 'public');
-                CarImage::create([
-                    'car_id' => $car->id,
-                    'path' => $path
-                ]);
+            $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
+            $car->save();
+
+            if (request()->hasFile('path')) {
+                foreach (request()->file('path') as $image) {
+                    $path = $image->store('/car_images/', 'public');
+                    CarImage::create([
+                        'car_id' => $car->id,
+                        'path' => $path
+                    ]);
+                }
             }
+
+            CarFeature::updateOrCreate(  // if update case =>[ CF->where('car_id','$car->id')->update() || Cf::updateOrCreate() ];
+                [
+                    'car_id' => $car->id
+                ],
+                [
+                    'Air_Conditioning' => $carCreateRequest->Air_Conditioning,
+                    'Power_Windows' => $carCreateRequest->Power_Windows,
+                    'Power_DoorLocks' => $carCreateRequest->Power_DoorLocks,
+                    'ABS' => $carCreateRequest->ABS,
+                    'Cruise_Control' => $carCreateRequest->Cruise_Control,
+                    'Bluetooth_Connectivity' => $carCreateRequest->Bluetooth_Connectivity,
+                    'Remote_Start' => $carCreateRequest->Remote_Start,
+                    'GPS' => $carCreateRequest->GPS,
+                    'Heated_Seats' => $carCreateRequest->Heated_Seats,
+                    'Climate_Control' => $carCreateRequest->Climate_Control,
+                    'Rear_ParkingSensors' => $carCreateRequest->Rear_ParkingSensors,
+                    'Leather_Seats' => $carCreateRequest->Leather_Seats
+                ]
+            );
+            DB::commit();
+            return to_route('cars.index')->with('success', "$car->name successfully created!");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', $th->getMessage());
         }
-
-        CarFeature::updateOrCreate(  // if update case =>[ CF->where('car_id','$car->id')->update() || Cf::updateOrCreate() ];
-            [
-                'car_id' => $car->id
-            ],
-            [
-                'Air_Conditioning' => $carCreateRequest->Air_Conditioning,
-                'Power_Windows' => $carCreateRequest->Power_Windows,
-                'Power_DoorLocks' => $carCreateRequest->Power_DoorLocks,
-                'ABS' => $carCreateRequest->ABS,
-                'Cruise_Control' => $carCreateRequest->Cruise_Control,
-                'Bluetooth_Connectivity' => $carCreateRequest->Bluetooth_Connectivity,
-                'Remote_Start' => $carCreateRequest->Remote_Start,
-                'GPS' => $carCreateRequest->GPS,
-                'Heated_Seats' => $carCreateRequest->Heated_Seats,
-                'Climate_Control' => $carCreateRequest->Climate_Control,
-                'Rear_ParkingSensors' => $carCreateRequest->Rear_ParkingSensors,
-                'Leather_Seats' => $carCreateRequest->Leather_Seats
-            ]
-        );
-
-        Alert::success('Success', 'Created Success!');
-
-        return to_route('cars.index')->with('success', "$car->name successfully created!");
     }
 
     /**
@@ -120,57 +126,67 @@ class CarController extends Controller
      */
     public function update(CarEditRequest $carEditRequest, Car $car)
     {
-        request()->validate([
-            'path' => 'required',
-        ]);
+        try {
+            DB::beginTransaction();
+            request()->validate([
+                'path' => 'required',
+            ]);
 
-        // old image and old image data record deleted
-        foreach ($car->images as $image) {
-            if (isset($image->path)) {
-                Storage::disk('public')->delete($image->path);
+            // old image-path and old image-record deleted
+            foreach ($car->images as $image) {
+                if (isset($image->path)) {
+                    Storage::disk('public')->delete($image->path);
+                }
             }
-        }
-        $carImages = CarImage::where('car_id', $car->id)->get();
-        foreach ($carImages as $carimage) {
-            CarImage::destroy($carimage->id);
-        }
-
-        // car table update
-        $car->update([...$carEditRequest->validated(), 'user_id' => $car->user_id]);
-
-        // car image and record update
-        if (request()->hasFile('path')) {
-            foreach (request()->file('path') as $image) {
-                $path = $image->store('/car_images/', 'public');
-                CarImage::create([
-                    'car_id' => $car->id,
-                    'path' => $path
-                ]);
+            $carImages = CarImage::where('car_id', $car->id)->get();
+            foreach ($carImages as $carimage) {
+                CarImage::destroy($carimage->id);
             }
+
+            // car table update
+            $car->update([...$carEditRequest->validated(), 'user_id' => $car->user_id]);
+
+            // car image and record update
+            if (request()->hasFile('path')) {
+                foreach (request()->file('path') as $image) {
+                    $path = $image->store('/car_images/', 'public');
+                    CarImage::create([
+                        'car_id' => $car->id,
+                        'path' => $path
+                    ]);
+                }
+            }
+
+            // carfeature update
+            CarFeature::updateOrCreate(  // if update case =>[ CF->where('car_id','$car->id')->update() || Cf::updateOrCreate() ];
+                [
+                    'car_id' => $car->id
+                ],
+                [
+                    'Air_Conditioning' => $carEditRequest->Air_Conditioning,
+                    'Power_Windows' => $carEditRequest->Power_Windows,
+                    'Power_DoorLocks' => $carEditRequest->Power_DoorLocks,
+                    'ABS' => $carEditRequest->ABS,
+                    'Cruise_Control' => $carEditRequest->Cruise_Control,
+                    'Bluetooth_Connectivity' => $carEditRequest->Bluetooth_Connectivity,
+                    'Remote_Start' => $carEditRequest->Remote_Start,
+                    'GPS' => $carEditRequest->GPS,
+                    'Heated_Seats' => $carEditRequest->Heated_Seats,
+                    'Climate_Control' => $carEditRequest->Climate_Control,
+                    'Rear_ParkingSensors' => $carEditRequest->Rear_ParkingSensors,
+                    'Leather_Seats' => $carEditRequest->Leather_Seats
+                ]
+            );
+
+            DB::commit();
+
+            return to_route('cars.index')->with('success', "$car->name updated Success!");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->withErrors([
+                'success' => $th->getMessage(),
+            ]);
         }
-
-        // carfeature update
-        CarFeature::updateOrCreate(  // if update case =>[ CF->where('car_id','$car->id')->update() || Cf::updateOrCreate() ];
-            [
-                'car_id' => $car->id
-            ],
-            [
-                'Air_Conditioning' => $carEditRequest->Air_Conditioning,
-                'Power_Windows' => $carEditRequest->Power_Windows,
-                'Power_DoorLocks' => $carEditRequest->Power_DoorLocks,
-                'ABS' => $carEditRequest->ABS,
-                'Cruise_Control' => $carEditRequest->Cruise_Control,
-                'Bluetooth_Connectivity' => $carEditRequest->Bluetooth_Connectivity,
-                'Remote_Start' => $carEditRequest->Remote_Start,
-                'GPS' => $carEditRequest->GPS,
-                'Heated_Seats' => $carEditRequest->Heated_Seats,
-                'Climate_Control' => $carEditRequest->Climate_Control,
-                'Rear_ParkingSensors' => $carEditRequest->Rear_ParkingSensors,
-                'Leather_Seats' => $carEditRequest->Leather_Seats
-            ]
-        );
-
-        return to_route('cars.index')->with('success', "$car->name updated Success!");
     }
 
     /**

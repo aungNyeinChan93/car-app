@@ -10,6 +10,7 @@ use App\Models\CarModel;
 use App\Models\FuelType;
 use App\Models\CarFeature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CarCreateRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -42,7 +43,17 @@ class CarController extends Controller
      */
     public function store(CarCreateRequest $carCreateRequest)
     {
-        $car = Car::create([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
+        // first approach
+        // $car = Car::create([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
+
+        // sec approach
+        // $car = new Car();
+        // $car->fill([...$carCreateRequest->validated(), 'user_id' => Auth::id()]);
+        // $car->save();
+
+        // third approach
+        $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
+        $car->save();
 
         if (request()->hasFile('path')) {
             foreach (request()->file('path') as $image) {

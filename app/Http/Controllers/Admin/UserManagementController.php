@@ -12,7 +12,12 @@ class UserManagementController extends Controller
     //index
     public function index()
     {
-        $users = User::query()->with(['roles', 'cars', 'favouriteCars'])->latest()->get();
+        $users = User::query()->with(['roles', 'cars', 'favouriteCars'])
+            ->when(request()->search, function ($query) {
+                $query->whereAny(['name', 'email'], 'like', '%' . request('search') . '%');
+            })
+            ->latest()
+            ->get();
         return view('Admin.user_management.index', compact('users'));
     }
 

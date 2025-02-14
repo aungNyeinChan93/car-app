@@ -1,5 +1,7 @@
 @props([''])
 
+
+
 <div class="overflow-x-auto p-2 ">
     <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm rounded-lg">
         <thead class="ltr:text-left rtl:text-right">

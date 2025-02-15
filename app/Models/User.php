@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Avator::class);
     }
+
+    public function isAdmin()
+    {
+        return collect($this->roles)->contains(fn($role) => $role->name === 'admin');
+    }
 }

@@ -48,6 +48,7 @@ class CarController extends Controller
     public function store(CarCreateRequest $carCreateRequest)
     {
         try {
+            DB::beginTransaction();
             // first approach
             // $car = Car::create([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
 
@@ -57,10 +58,12 @@ class CarController extends Controller
             // $car->save();
 
             // third approach
-            DB::beginTransaction();
-
             $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
             $car->save();
+
+            // fourth approach
+            // $car = new Car();
+            // $car->save([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
 
             if (request()->hasFile('path')) {
                 foreach (request()->file('path') as $image) {
@@ -130,6 +133,8 @@ class CarController extends Controller
             DB::beginTransaction();
             request()->validate([
                 'path' => 'required',
+            ], [
+                'path.required' => 'image fileds is rrequired!'
             ]);
 
             // old image-path and old image-record deleted

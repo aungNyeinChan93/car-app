@@ -38,6 +38,10 @@
                 <ul class="submenu">
 
                     <li>
+                        <a href="{{ route('profile.index') }}">Profile</a>
+                    </li>
+
+                    <li>
                         <a href="{{ route('cars.index') }}">Cars Lists</a>
                     </li>
 

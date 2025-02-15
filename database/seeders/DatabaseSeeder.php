@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'Tester',
+            'email' => 'testwe@123.com',
+        ]);
 
         $this->call([
             RoleSeeder::class,

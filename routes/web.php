@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
@@ -10,6 +11,11 @@ use App\Http\Controllers\User\HomeController;
 
 
 Route::redirect('/', 'client/home', 302);
+
+// 404 page
+Route::fallback(function () {
+    return view('errors.404');
+});
 
 
 // Guest
@@ -40,6 +46,10 @@ Route::group(['prefix' => 'client', 'middleware' => ['auth']], function () {
     // cars
     Route::get('cars/favourite', [CarController::class, 'favouriteCars'])->name('cars.favouriteCars');
     Route::resource('cars', CarController::class);
+
+    // profile
+    Route::put('profile/password-change', [ProfileController::class, 'change_password'])->name('profile.change_password');
+    Route::resource('profile', ProfileController::class)->only(['index', 'update']);
 });
 
 
@@ -59,11 +69,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 });
 
-
-// 404 page
-Route::fallback(function () {
-    return view('errors.404');
-});
 
 
 

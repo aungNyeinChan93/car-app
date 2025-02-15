@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Car::class, 'cars_users');
     }
+
+    public function avator()
+    {
+        return $this->hasOne(Avator::class);
+    }
 }

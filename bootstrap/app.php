@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMIddleware;
+use App\Http\Middleware\IsNotSuspendedMIddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => AdminMIddleware::class,
             'superAdmin' => SuperAdminMiddleware::class,
+            'notSuspended' => IsNotSuspendedMIddleware::class,
 
         ]);
     })

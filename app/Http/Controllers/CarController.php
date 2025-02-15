@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Storage;
 use App\Models\Car;
 use App\Models\Maker;
@@ -17,8 +19,19 @@ use App\Http\Requests\CarEditRequest;
 use App\Http\Requests\CarCreateRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class CarController extends Controller
+class CarController extends Controller implements HasMiddleware
 {
+    /**
+     * Summary of middleware
+     * @return Middleware[]
+     */
+    public static function middleware()
+    {
+        return [
+            new Middleware(['notSuspended'], except: ['index', 'show', 'favouriteCars']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -61,10 +74,6 @@ class CarController extends Controller
             $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
             $car->save();
 
-            // fourth approach
-            // $car = new Car();
-            // $car->save([...$carCreateRequest->validated(), 'user_id' => auth()->user()->id]);
-
             if (request()->hasFile('path')) {
                 foreach (request()->file('path') as $image) {
                     $path = $image->store('/car_images/', 'public');
@@ -94,8 +103,12 @@ class CarController extends Controller
                     'Leather_Seats' => $carCreateRequest->Leather_Seats
                 ]
             );
+
             DB::commit();
-            return to_route('cars.index')->with('success', "$car->name successfully created!");
+
+            return to_route('cars.index', [], 400)
+                ->with('success', "$car->name successfully created!");
+
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());

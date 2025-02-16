@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\CarType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -62,5 +64,16 @@ class Car extends Model
     public function singleImage(): HasOne
     {
         return $this->hasOne(CarImage::class, 'car_id', 'id')->oldestOfMany('id');
+    }
+    public function testing()
+    {
+        return $this->whereHas('user', function (Builder $builder) {
+            $builder->where('name', 'Aung Nyein Chan');
+        })->first();
+    }
+
+    public function byType(string $type)
+    {
+        return $this->whereBelongsTo(CarType::where('name', $type)->first())->get();
     }
 }

@@ -37,8 +37,15 @@ class CarController extends Controller implements HasMiddleware
      */
     public function index()
     {
-
         $cars = Car::query()->latest()->simplePaginate(5);
+
+        // $cars[0]->carType()->associate(1)->save();
+        // $cars[0]->user()->associate(auth()->user()->id)->save();
+        // dd('hit');
+
+        // $cars = Car::whereBelongsTo(CarType::where(['name' => 'Arthur Rojas'])->first())->get();
+        // $cars = CarType::where(['name' => 'Arthur Rojas'])->first()->cars;
+        // dd($cars);
 
         return view('User.cars.index', compact('cars'));
     }
@@ -73,7 +80,6 @@ class CarController extends Controller implements HasMiddleware
             // third approach
             $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
             $car->save();
-
             if (request()->hasFile('path')) {
                 foreach (request()->file('path') as $image) {
                     $path = $image->store('/car_images/', 'public');
@@ -106,7 +112,7 @@ class CarController extends Controller implements HasMiddleware
 
             DB::commit();
 
-            return to_route('cars.index', [], 400)
+            return to_route('cars.index')
                 ->with('success', "$car->name successfully created!");
 
         } catch (\Throwable $th) {
@@ -156,10 +162,11 @@ class CarController extends Controller implements HasMiddleware
                     Storage::disk('public')->delete($image->path);
                 }
             }
-            $carImages = CarImage::where('car_id', $car->id)->get();
-            foreach ($carImages as $carimage) {
-                CarImage::destroy($carimage->id);
-            }
+            $car->images()->delete();
+            // $carImages = CarImage::where('car_id', $car->id)->get();
+            // foreach ($carImages as $carimage) {
+            //     CarImage::destroy($carimage->id);
+            // }
 
             // car table update
             $car->update([...$carEditRequest->validated(), 'user_id' => $car->user_id]);
@@ -219,10 +226,11 @@ class CarController extends Controller implements HasMiddleware
             }
         }
 
-        $carImages = CarImage::where('car_id', $car->id)->get();
-        foreach ($carImages as $carimage) {
-            CarImage::destroy($carimage->id);
-        }
+        $car->images()->delete();
+        // $carImages = CarImage::where('car_id', $car->id)->get();
+        // foreach ($carImages as $carimage) {
+        //     CarImage::destroy($carimage->id);
+        // }
 
         // $car->delete();
         Car::destroy($car->id);
@@ -242,5 +250,24 @@ class CarController extends Controller implements HasMiddleware
             ->get();
 
         return view('User.cars.favouriteCars', compact('myFavCars'));
+    }
+
+    // Static filter methods
+    public function byType(string $type)
+    {
+        $cars = Car::whereBelongsTo(CarType::where('name', $type)->first())->get();
+        dd($cars);
+    }
+
+    public function byMaker(string $maker)
+    {
+        $cars = Car::whereBelongsTo(Maker::where('name', $maker)->first())->get();
+        dd($cars);
+    }
+
+    public function byFuelType(string $fuelType)
+    {
+        $cars = Car::whereBelongsTo(FuelType::where('name', $fuelType)->first())->get();
+        dd($cars);
     }
 }

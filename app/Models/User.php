@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return collect($this->roles)->contains(fn($role) => $role->name === 'admin');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }

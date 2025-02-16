@@ -60,14 +60,19 @@
                             <li>
                                 <a href="{{ route('car-types.index') }}">Car Types</a>
                             </li>
-                        @elseif ($role->name === 'admin' && $role->name !== 'suspended')
-                            <li>
-                                <a href="{{ route('car-types.index') }}">Car Types</a>
-                            </li>
                         @endif
                     @endforeach
 
+
                     @auth
+                        <li>
+                            <a href="{{ route('contact.index') }}">Contact Admin</a>
+                        </li>
+                        @if (auth()->user()->isAdmin())
+                            <li>
+                                <a href="{{ route('contact.lists') }}">Contact Lists</a>
+                            </li>
+                        @endif
                         <li>
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf

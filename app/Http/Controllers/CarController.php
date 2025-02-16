@@ -80,6 +80,8 @@ class CarController extends Controller implements HasMiddleware
             // third approach
             $car = new Car(array_merge($carCreateRequest->validated(), ['user_id' => auth()->user()->id]));
             $car->save();
+
+
             if (request()->hasFile('path')) {
                 foreach (request()->file('path') as $image) {
                     $path = $image->store('/car_images/', 'public');

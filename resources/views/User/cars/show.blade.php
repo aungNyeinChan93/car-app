@@ -29,7 +29,7 @@
                                 id="activeImage" />
                         </div>
                         <div class="car-image-thumbnails">
-                            @foreach (optional($car->images) as $image)
+                            @foreach ($car->images as $image)
                                 <img src="{{ asset("/storage/$image->path") }}" alt="" />
                             @endforeach
                         </div>

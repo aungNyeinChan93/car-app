@@ -92,8 +92,13 @@
                         @endcan --}}
                 </ul>
             </div>
-            <div>
+            <div class="flex space-x-3 items-center">
                 <span class="font-bold text-sm uppercase"> {{ auth()->user()->name }}</span>
+                <span>
+                    <img class="w-[50px] h-[50px] rounded-full"
+                        src="{{ !auth()->user()->avator ? asset('/img/default.jpg') : asset('/storage/' . auth()->user()->avator?->path) }}"
+                        alt="avator">
+                </span>
             </div>
             @guest
                 <a href="{{ route('register') }}" class="btn btn-primary btn-signup">

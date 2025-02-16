@@ -19,13 +19,23 @@ class ContactController extends Controller implements HasMiddleware
             new Middleware(['admin'], except: ['index', 'store']),
         ];
     }
+    /*-------------end-------------*/
 
-    //index
+    /**
+     * Summary of index
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(
     ) {
         return view('User.contact.index');
     }
+    /*-------------end-------------*/
 
+    /**
+     * Summary of store
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $fileds = $request->validate([
@@ -40,19 +50,31 @@ class ContactController extends Controller implements HasMiddleware
 
         return back()->with('success', 'Your Contact information successfully send to admin !');
     }
+    /*-------------end-------------*/
 
-    // contact lists
 
+    /**
+     * Summary of contactLists
+     * @return \Illuminate\Contracts\View\View
+     */
     public function contactLists()
     {
         $contacts = Contact::query()->latest()->simplePaginate(10);
         return view('Admin.contact.lists', compact('contacts'));
     }
+    /*-------------end-------------*/
 
-    // show
+
+    /**
+     * Summary of show
+     * @param \App\Models\Contact $contact
+     * @return \Illuminate\Contracts\View\View
+     */
     public function show(Contact $contact)
     {
         return view('Admin.contact.show', compact('contact'));
     }
+    /*-------------end-------------*/
+
 
 }
